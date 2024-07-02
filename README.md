@@ -1,5 +1,3 @@
-# SEA600 - Assignment 2
-
 ## Paper Review
 
 ### Introduction
