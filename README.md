@@ -50,6 +50,8 @@ To tackle the computational intensity, we propose utilizing Microsoft’s Low-Ra
 
 ![Weight Update in LoRA](Images/WeightUpdate.png)
 
+## [Code Solution](lora_llama.ipynb)
+
 ### Fine-Tuning Process
 
 1. **Dataset**: Use domain-specific data for fine-tuning.
