@@ -1,165 +1,216 @@
-<h2 id="paper-review">Paper Review</h2>
-<h3 id="introduction">Introduction</h3>
-<p>The research paper [1] introduces a new series of models called LLaMA
-to enhance efficiency and performance in foundational language models.
-The architecture is built upon the transformer model and includes tweaks
-such as pre-normalization with RMSNorm for more consistent training and
-rotary positional embeddings in place of absolute positional embeddings.
-LLaMA-2, a later version, introduces grouped-query attention to enhance
-the scalability of larger models during inference.</p>
-<h3 id="transformer">Transformer</h3>
-<p>Transformers are a type of Artificial Neural Network (ANN)
-architecture used in Natural Language Processing (NLP) [2]. Unlike RNNs,
-Transformers process/operate on all the data in parallel rather than
-processing them sequentially, allowing for faster training times.</p>
-<h4 id="overview-of-architecture">Overview of Architecture</h4>
-<p>This model employs an encoder-decoder structure in the architecture,
-each of which is composed of layers that process input text and generate
-the output [2]. Each stage has multiple sub-layers that include an
-attention mechanism for contextual processing and a feed-forward network
-for parallel computation of elements.</p>
-<figure>
-<img src="Images/Transformer.png" alt="Transformer Architecture" />
-<figcaption aria-hidden="true">Transformer Architecture</figcaption>
-</figure>
-<h3 id="attention-mechanism">Attention Mechanism</h3>
-<p>The attention mechanism emphasizes important words in a sentence to
-understand the context better. It allows the model to selectively focus
-on parts of the text that are relevant to the current task [2]. It
-processes all parts of the input sentence simultaneously rather than
-sequentially. The attention mechanism calculates a set of Query (Q), Key
-(K), and Value (V) vectors through the linear transformation of the
-input embeddings in the transformers. The similarity between each query
-and all keys is calculated using cosine similarity, which is then
-normalized to attention weights.</p>
-<h3 id="llama">LLaMA</h3>
-<p>Meta AI introduces the LLaMA collection of models ranging from 7B to
-65B parameters trained on publicly available datasets. The LLaMA-13B
-model outperforms GPT-3 (175B) on most benchmarks. LLaMA-65B is
-competitive with models like Chinchilla-70B and PaLM-540B.</p>
-<figure>
-<img src="/Images/LLAMA.png" alt="LLaMA Architecture" />
-<figcaption aria-hidden="true">LLaMA Architecture</figcaption>
-</figure>
-<h4 id="methodology">Methodology</h4>
-<p>The LLaMA model employs large transformers powered by self-attention
-mechanisms trained on a massive corpus of data using standard
-optimizers. Key features include:</p>
-<ul>
-<li><strong>Rotary Embedding</strong>: Helps preserve relative
-positional relationships in Transformer Models.</li>
-<li><strong>Grouped Attention</strong>: Multiple queries share the same
-set of keys and values, reducing the number of unique attention
-calculations required, improving computational efficiency.</li>
-<li><strong>RMSNorm</strong>: Applied before attention and feed-forward
-layers for normalization.</li>
-</ul>
-<h3 id="efficiencyparallelization">Efficiency/Parallelization</h3>
-<p>The Attention class demonstrates parallelization in the transformer
-class. The number of heads (including query, key, and value) are divided
-by the model_parallel_size, which is the number of GPUs. Custom linear
-layers distribute weight matrices across GPUs for query transformation
-and value application.</p>
-<h3 id="sample-run-and-testing">Sample Run and Testing</h3>
-<p>We were able to run the code from the official llama repository.
-However, we faced challenges running the model natively on Apple Silicon
-Chips (no NVIDIA GPUs). We used the llama.cpp repository to run the
-model on Mac.</p>
-<h3 id="problem-with-existing-model">Problem with Existing Model</h3>
-<p>The LLaMA model addresses the problem of training large language
-models to achieve optimal performance at various inference budgets by
-scaling datasets and model sizes appropriately. Challenges include high
-computational power requirements, environmental impact, diminishing
-performance improvements with size, and potential biases from the
-training dataset.</p>
-<h3 id="proposed-solution">Proposed Solution</h3>
-<p>To tackle the computational intensity, we propose utilizing
-Microsoft’s Low-Rank Adaptation (LoRA) technique, which reduces the
-model’s complexity by decomposing its parameter matrix into manageable
-low-rank matrices. We suggest using QLoRA for even more efficient
-fine-tuning.</p>
-<figure>
-<img src="Images/WeightUpdate.png" alt="Weight Update in LoRA" />
-<figcaption aria-hidden="true">Weight Update in LoRA</figcaption>
-</figure>
-<h2 id="code-solution"><a href="lora_llama.ipynb">Code Solution</a></h2>
-<h3 id="fine-tuning-process">Fine-Tuning Process</h3>
-<ol type="1">
-<li><strong>Dataset</strong>: Use domain-specific data for
-fine-tuning.</li>
-<li><strong>Metrics</strong>: Evaluate using BLEU and ROUGE scores.</li>
-<li><strong>Configuration</strong>: Set parameters for quantization,
-LoRA, and training.</li>
-<li><strong>Training and Evaluation</strong>: Train and evaluate the
-fine-tuned model.</li>
-</ol>
-<h3 id="advantages-and-disadvantages">Advantages and Disadvantages</h3>
-<table>
-<thead>
-<tr>
-<th>LLaMA 2</th>
-<th>Fine-tuning w/ LoRA</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Advantage</strong></td>
-<td><strong>Advantage</strong></td>
-</tr>
-<tr>
-<td>Comprehensive Knowledge</td>
-<td>Requires Minimal Resources</td>
-</tr>
-<tr>
-<td>State-of-Art Model</td>
-<td>Allows Easy Model Switching</td>
-</tr>
-<tr>
-<td>Computational Efficient</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>Disadvantage</strong></td>
-<td><strong>Disadvantage</strong></td>
-</tr>
-<tr>
-<td>Resources Intensive</td>
-<td>Risk of Overfitting</td>
-</tr>
-<tr>
-<td>Lack of Deep Domain Knowledge</td>
-<td>Catastrophic Forgetting</td>
-</tr>
-</tbody>
-</table>
-<h3 id="evaluation">Evaluation</h3>
-<p>We used the ROUGE score to evaluate summarization and machine
-translation. The fine-tuned model showed better overlap between
-generated inferences and references, proving increased performance.</p>
-<h3 id="conclusion">Conclusion</h3>
-<p>The Transformer architecture leverages the attention mechanism and
-parallelization for efficiency. LoRA fine-tuning can train the LLaMA
-model quickly on a specific dataset. However, the extended inference
-duration can slow down evaluation times, posing a potential
-bottleneck.</p>
-<h2 id="references">References</h2>
-<ol type="1">
-<li>H. Touvron et al. “LLaMA: Open and Efficient Foundation Language
-Models” 2023 https://arxiv.org/abs/2302.13971</li>
-<li>Vaswani et al “Attention is all you need” 2017.
-https://arxiv.org/pdf/1706.03762.pdf</li>
-<li>Z. Akhter “A Beginner’s Guide to Fine-Tuning LLM Using LoRA” 2023.
-https://zohaib.me/a-beginners-guide-to-fine-tuning-llm-using-lora/</li>
-<li>D. Falbel “Understanding LoRA with a minimal example” 2023
-https://blogs.rstudio.com/ai/posts/2023-06-22-understanding-lora/</li>
-<li>Detmers et al “QLORA: Efficient Finetuning of Quantized LLMs”2023
-https://arxiv.org/pdf/2305.14314.pdf</li>
-<li>S. Maheshkar “What is QLoRA” Weights &amp; Biases 2023
-https://wandb.ai/sauravmaheshkar/QLoRA/reports/What-is-QLoRA—Vmlldzo2MTI2OTc5</li>
-<li>Z. Keita “Llama.cpp Tutorial: A Complete Guide to Efficient LLM
-Inference and Implementation” DataCamp 2023
-https://www.datacamp.com/tutorial/llama-cpp-tutorial</li>
-<li>E. Kızılırmak “Text Summarization” https://medium.com/<span
-class="citation"
-data-cites="eren9677/text-summarization-387836c9e178">@eren9677/text-summarization-387836c9e178</span></li>
-</ol>
+<head>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h2 id="paper-review">Paper Review</h2>
+  <h3 id="introduction">Introduction</h3>
+  <p>
+    The research paper [1] introduces a new series of models called LLaMA to
+    enhance efficiency and performance in foundational language models. The
+    architecture is built upon the transformer model and includes tweaks such as
+    pre-normalization with RMSNorm for more consistent training and rotary
+    positional embeddings in place of absolute positional embeddings. LLaMA-2, a
+    later version, introduces grouped-query attention to enhance the scalability
+    of larger models during inference.
+  </p>
+  <h3 id="transformer">Transformer</h3>
+  <p>
+    Transformers are a type of Artificial Neural Network (ANN) architecture used
+    in Natural Language Processing (NLP) [2]. Unlike RNNs, Transformers
+    process/operate on all the data in parallel rather than processing them
+    sequentially, allowing for faster training times.
+  </p>
+  <h4 id="overview-of-architecture">Overview of Architecture</h4>
+  <p>
+    This model employs an encoder-decoder structure in the architecture, each of
+    which is composed of layers that process input text and generate the output
+    [2]. Each stage has multiple sub-layers that include an attention mechanism
+    for contextual processing and a feed-forward network for parallel
+    computation of elements.
+  </p>
+  <figure>
+    <img src="Images/Transformer.png" alt="Transformer Architecture" />
+    <figcaption aria-hidden="true">Transformer Architecture</figcaption>
+  </figure>
+  <h3 id="attention-mechanism">Attention Mechanism</h3>
+  <p>
+    The attention mechanism emphasizes important words in a sentence to
+    understand the context better. It allows the model to selectively focus on
+    parts of the text that are relevant to the current task [2]. It processes
+    all parts of the input sentence simultaneously rather than sequentially. The
+    attention mechanism calculates a set of Query (Q), Key (K), and Value (V)
+    vectors through the linear transformation of the input embeddings in the
+    transformers. The similarity between each query and all keys is calculated
+    using cosine similarity, which is then normalized to attention weights.
+  </p>
+  <h3 id="llama">LLaMA</h3>
+  <p>
+    Meta AI introduces the LLaMA collection of models ranging from 7B to 65B
+    parameters trained on publicly available datasets. The LLaMA-13B model
+    outperforms GPT-3 (175B) on most benchmarks. LLaMA-65B is competitive with
+    models like Chinchilla-70B and PaLM-540B.
+  </p>
+  <figure>
+    <img src="/Images/LLAMA.png" alt="LLaMA Architecture" />
+    <figcaption aria-hidden="true">LLaMA Architecture</figcaption>
+  </figure>
+  <h4 id="methodology">Methodology</h4>
+  <p>
+    The LLaMA model employs large transformers powered by self-attention
+    mechanisms trained on a massive corpus of data using standard optimizers.
+    Key features include:
+  </p>
+  <ul>
+    <li>
+      <strong>Rotary Embedding</strong>: Helps preserve relative positional
+      relationships in Transformer Models.
+    </li>
+    <li>
+      <strong>Grouped Attention</strong>: Multiple queries share the same set of
+      keys and values, reducing the number of unique attention calculations
+      required, improving computational efficiency.
+    </li>
+    <li>
+      <strong>RMSNorm</strong>: Applied before attention and feed-forward layers
+      for normalization.
+    </li>
+  </ul>
+  <h3 id="efficiencyparallelization">Efficiency/Parallelization</h3>
+  <p>
+    The Attention class demonstrates parallelization in the transformer class.
+    The number of heads (including query, key, and value) are divided by the
+    model_parallel_size, which is the number of GPUs. Custom linear layers
+    distribute weight matrices across GPUs for query transformation and value
+    application.
+  </p>
+  <h3 id="sample-run-and-testing">Sample Run and Testing</h3>
+  <p>
+    We were able to run the code from the official llama repository. However, we
+    faced challenges running the model natively on Apple Silicon Chips (no
+    NVIDIA GPUs). We used the llama.cpp repository to run the model on Mac.
+  </p>
+  <h3 id="problem-with-existing-model">Problem with Existing Model</h3>
+  <p>
+    The LLaMA model addresses the problem of training large language models to
+    achieve optimal performance at various inference budgets by scaling datasets
+    and model sizes appropriately. Challenges include high computational power
+    requirements, environmental impact, diminishing performance improvements
+    with size, and potential biases from the training dataset.
+  </p>
+  <h3 id="proposed-solution">Proposed Solution</h3>
+  <p>
+    To tackle the computational intensity, we propose utilizing Microsoft’s
+    Low-Rank Adaptation (LoRA) technique, which reduces the model’s complexity
+    by decomposing its parameter matrix into manageable low-rank matrices. We
+    suggest using QLoRA for even more efficient fine-tuning.
+  </p>
+  <figure>
+    <img src="Images/WeightUpdate.png" alt="Weight Update in LoRA" />
+    <figcaption aria-hidden="true">Weight Update in LoRA</figcaption>
+  </figure>
+  <h2 id="code-solution"><a href="lora_llama.ipynb">Code Solution</a></h2>
+  <h3 id="fine-tuning-process">Fine-Tuning Process</h3>
+  <ol type="1">
+    <li><strong>Dataset</strong>: Use domain-specific data for fine-tuning.</li>
+    <li><strong>Metrics</strong>: Evaluate using BLEU and ROUGE scores.</li>
+    <li>
+      <strong>Configuration</strong>: Set parameters for quantization, LoRA, and
+      training.
+    </li>
+    <li>
+      <strong>Training and Evaluation</strong>: Train and evaluate the
+      fine-tuned model.
+    </li>
+  </ol>
+  <h3 id="advantages-and-disadvantages">Advantages and Disadvantages</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>LLaMA 2</th>
+        <th>Fine-tuning w/ LoRA</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Advantage</strong></td>
+        <td><strong>Advantage</strong></td>
+      </tr>
+      <tr>
+        <td>Comprehensive Knowledge</td>
+        <td>Requires Minimal Resources</td>
+      </tr>
+      <tr>
+        <td>State-of-Art Model</td>
+        <td>Allows Easy Model Switching</td>
+      </tr>
+      <tr>
+        <td>Computational Efficient</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>Disadvantage</strong></td>
+        <td><strong>Disadvantage</strong></td>
+      </tr>
+      <tr>
+        <td>Resources Intensive</td>
+        <td>Risk of Overfitting</td>
+      </tr>
+      <tr>
+        <td>Lack of Deep Domain Knowledge</td>
+        <td>Catastrophic Forgetting</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="evaluation">Evaluation</h3>
+  <p>
+    We used the ROUGE score to evaluate summarization and machine translation.
+    The fine-tuned model showed better overlap between generated inferences and
+    references, proving increased performance.
+  </p>
+  <h3 id="conclusion">Conclusion</h3>
+  <p>
+    The Transformer architecture leverages the attention mechanism and
+    parallelization for efficiency. LoRA fine-tuning can train the LLaMA model
+    quickly on a specific dataset. However, the extended inference duration can
+    slow down evaluation times, posing a potential bottleneck.
+  </p>
+  <h2 id="references">References</h2>
+  <ol type="1">
+    <li>
+      H. Touvron et al. “LLaMA: Open and Efficient Foundation Language Models”
+      2023 https://arxiv.org/abs/2302.13971
+    </li>
+    <li>
+      Vaswani et al “Attention is all you need” 2017.
+      https://arxiv.org/pdf/1706.03762.pdf
+    </li>
+    <li>
+      Z. Akhter “A Beginner’s Guide to Fine-Tuning LLM Using LoRA” 2023.
+      https://zohaib.me/a-beginners-guide-to-fine-tuning-llm-using-lora/
+    </li>
+    <li>
+      D. Falbel “Understanding LoRA with a minimal example” 2023
+      https://blogs.rstudio.com/ai/posts/2023-06-22-understanding-lora/
+    </li>
+    <li>
+      Detmers et al “QLORA: Efficient Finetuning of Quantized LLMs”2023
+      https://arxiv.org/pdf/2305.14314.pdf
+    </li>
+    <li>
+      S. Maheshkar “What is QLoRA” Weights &amp; Biases 2023
+      https://wandb.ai/sauravmaheshkar/QLoRA/reports/What-is-QLoRA—Vmlldzo2MTI2OTc5
+    </li>
+    <li>
+      Z. Keita “Llama.cpp Tutorial: A Complete Guide to Efficient LLM Inference
+      and Implementation” DataCamp 2023
+      https://www.datacamp.com/tutorial/llama-cpp-tutorial
+    </li>
+    <li>
+      E. Kızılırmak “Text Summarization” https://medium.com/<span
+        class="citation"
+        data-cites="eren9677/text-summarization-387836c9e178"
+        >@eren9677/text-summarization-387836c9e178</span
+      >
+    </li>
+  </ol>
+</body>

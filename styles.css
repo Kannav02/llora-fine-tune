@@ -1,0 +1,158 @@
+/* General Reset */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    background-color: #000; /* Black background */
+    color: #fff; /* White text */
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 50px 0;
+}
+
+h2 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: bold;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+figcaption{
+    text-align: center;
+}
+
+p{
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+}
+
+/* Main Content */
+main {
+    padding: 20px 0;
+}
+
+/* Sections */
+section {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+section p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    font-family: 'Georgia', serif;
+    text-align: justify;
+}
+
+/* Images */
+img {
+    display: block;
+    margin: 20px auto;
+    max-width: 100%;
+    height: auto;
+    border: 3px solid #fff;
+}
+
+/* Buttons */
+button {
+    background-color: #fff; /* White background */
+    color: #000; /* Black text */
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+    background-color: #000; /* Black background on hover */
+    color: #fff; /* White text on hover */
+    border: 2px solid #fff; /* White border on hover */
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #fff;
+    margin-top: 40px;
+}
+
+footer p {
+    font-size: 0.8rem;
+}
+
+/* Links */
+a {
+    color: #fff; /* White links */
+    text-decoration: none;
+    border-bottom: 1px solid #fff;
+}
+#advantages-and-disadvantages{
+    margin:2rem 0;
+}
+table, th, td {
+    border: 1px solid #fff; /* Set border color to white */
+}
+
+th, td {
+    padding: 10px; /* Add some padding for better readability */
+    text-align: left; /* Align text to the left */
+}
+
+/* Optional: Add some styling to table header */
+th {
+    background-color: #333; /* Dark background for header */
+    color: #fff; /* White text for header */
+}
+table{
+    margin-bottom: 2rem;
+}
+/* Optional: Add some styling to table rows */
+tr:nth-child(even) {
+    background-color: #222; /* Darker background for even rows */
+}
+
+tr:nth-child(odd) {
+    background-color: #111; /* Lighter background for odd rows */
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.5rem;
+    }
+
+    section h2 {
+        font-size: 1.5rem;
+    }
+}
